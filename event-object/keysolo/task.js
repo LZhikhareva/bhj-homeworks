@@ -4,6 +4,10 @@ class Game {
     this.wordElement = container.querySelector('.word');
     this.winsElement = container.querySelector('.status__wins');
     this.lossElement = container.querySelector('.status__loss');
+    this.symbols = container.getElementsByClassName('symbol');
+    console.log(this.symbols)
+    this.currentSymbol = container.querySelector('.symbol_current');
+    this.timer = document.getElementById('timer-count');
 
     this.reset();
 
@@ -17,6 +21,17 @@ class Game {
   }
 
   registerEvents() {
+    document.addEventListener('keyup', e => {
+      let key = e.key.toLowerCase(); // Convert key to lowercase
+      let currentSymbolText = this.currentSymbol.textContent.toLowerCase(); // Convert currentSymbol text to lowercase
+      if (key === currentSymbolText) {
+        this.success();
+      } else {
+        this.fail();
+      }
+    });
+  }
+  
     /*
       TODO:
       Написать обработчик события, который откликается
@@ -25,7 +40,7 @@ class Game {
       При неправильном вводе символа - this.fail();
       DOM-элемент текущего символа находится в свойстве this.currentSymbol.
      */
-  }
+  
 
   success() {
     if(this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");
@@ -42,6 +57,8 @@ class Game {
       this.reset();
     }
     this.setNewWord();
+    clearInterval(this.timerInterval);
+    this.setTime();
   }
 
   fail() {
@@ -50,12 +67,16 @@ class Game {
       this.reset();
     }
     this.setNewWord();
+    clearInterval(this.timerInterval);
+    this.setTime();
+    
   }
 
   setNewWord() {
     const word = this.getWord();
 
     this.renderWord(word);
+    this.setTime();
   }
 
   getWord() {
@@ -87,6 +108,17 @@ class Game {
     this.wordElement.innerHTML = html;
 
     this.currentSymbol = this.wordElement.querySelector('.symbol_current');
+  }
+
+  setTime() {
+    this.timer.textContent = this.symbols.length; 
+    this.timerInterval = setInterval(() => { // Store the interval ID
+      this.timer.textContent = parseInt(this.timer.textContent) - 1; 
+      if (parseInt(this.timer.textContent) === 0) { 
+        this.fail();
+        clearInterval(this.timerInterval); // Clear the interval when the timer reaches 0
+      }
+    }, 1000);
   }
 }
 
