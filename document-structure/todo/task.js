@@ -25,20 +25,20 @@ function addTodo() {
   trashbutton.classList.add("task__remove");
   task.appendChild(trashbutton);
 
-  tasks.push({ title: input.value, trashbutton: trashbutton });
+  tasks.push(input.value);
   localStorage.setItem('tasks', JSON.stringify(tasks));
-  if (input.value === '') return;
+  if (input.value.trim() === '') return;
   list.appendChild(task);
   input.value = '';
 }
+
 function deleteItem(e) {
   const item = e.target;
   if (item.classList[0] === 'task__remove') {
     const todolist = item.parentElement;
     todolist.remove();
-    tasks = tasks.filter((task, index) => {
-      return task.title !== todolist.querySelector('.task__title').innerText;
-    });
+    const taskText = todolist.querySelector('.task__title').innerText;
+    tasks = tasks.filter(task => task !== taskText);
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }
 }
@@ -50,7 +50,7 @@ function renderTasks() {
     taskElement.classList.add('task');
     const title = document.createElement('div');
     title.classList.add('task__title');
-    title.innerText = task.title;
+    title.innerText = task;
     taskElement.appendChild(title);
     const trashbutton = document.createElement("a");
     trashbutton.innerHTML = '&times;';

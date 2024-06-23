@@ -8,7 +8,6 @@ if (localStorage.getItem('cartProducts')) {
     renderProducts();
 }
 
-
 values.forEach((value, index) => {
     const plusButtons = document.querySelectorAll(`.product__quantity-control_inc[data-index="${index}"]`);
     const minusButtons = document.querySelectorAll(`.product__quantity-control_dec[data-index="${index}"]`);
@@ -33,18 +32,17 @@ values.forEach((value, index) => {
 
 function renderProducts() {
     cartProductsContainer.innerHTML = '';
-    cartProducts.forEach(productData => {
+    cartProducts.forEach((productData, index) => {
         const cartProduct = document.createElement('div');
         cartProduct.classList.add('cart__product');
-        cartProduct.dataset.id = productData.id;
+        cartProduct.dataset.id = index + 1;
         const img = document.createElement('img');
         img.classList.add('cart__product-image');
-        img.src = productData.imageSrc;
-        img.alt = productData.imageAlt;
+        img.src = productData[0];
         cartProduct.appendChild(img);
         const count = document.createElement('div');
         count.classList.add('cart__product-count');
-        count.textContent = productData.count;
+        count.textContent = productData[1];
         cartProduct.appendChild(count);
         const trashbutton = document.createElement("a");
         trashbutton.innerHTML = '&times;';
@@ -59,16 +57,14 @@ addButtons.forEach((button, index) => {
         const product = document.querySelector(`.product[data-id="${index + 1}"]`);
         const productImage = product.querySelector('.product__image');
         const quantityValue = document.querySelector(`.product__quantity-value[data-index="${index}"]`);
-        const existingProductIndex = cartProducts.findIndex(productData => productData.id === index + 1);
+        const existingProductIndex = cartProducts.findIndex(productData => productData[0] === productImage.src);
         if (existingProductIndex !== -1) {
-            cartProducts[existingProductIndex].count = parseInt(cartProducts[existingProductIndex].count) + parseInt(quantityValue.textContent);
+            cartProducts[existingProductIndex][1] = parseInt(cartProducts[existingProductIndex][1]) + parseInt(quantityValue.textContent);
         } else {
-            const productData = {
-                id: index + 1,
-                imageSrc: productImage.src,
-                imageAlt: productImage.alt,
-                count: quantityValue.textContent
-            };
+            const productData = [
+                productImage.src,
+                Number(quantityValue.textContent.trim())
+            ];
             cartProducts.push(productData);
         }
         localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
@@ -81,8 +77,9 @@ function deleteItem(e) {
     if (item.classList[0] === 'product__remove') {
         const prList = item.parentElement;
         prList.remove();
+        const itemId = parseInt(prList.dataset.id);
         cartProducts = cartProducts.filter((productData, index) => {
-            return productData.id !== parseInt(prList.dataset.id);
+            return index + 1 !== itemId;
         });
         localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
     }
