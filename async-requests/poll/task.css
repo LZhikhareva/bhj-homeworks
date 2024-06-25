@@ -9,3 +9,17 @@ body {
 .poll__title {
   margin-bottom: 20px;
 }
+
+.poll__answers {
+  display: flex;
+  gap: 10px;
+}
+
+.votes__results {
+  display: flex;
+  gap: 10px;
+}
+
+.votes__results-value {
+ font-weight: bold;
+}
