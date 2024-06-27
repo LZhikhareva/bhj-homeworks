@@ -1,9 +1,19 @@
+body {
+  position: relative;
+}
+
+.card {
+  position: relative;
+}
+
 .signin {
   display: none;
 }
+
 .signin_active {
   display: block;
 }
+
 .control {
     width: 100%;
     display: block;
@@ -44,4 +54,47 @@
 .welcome_active {
   display: block;
   text-align: center;
+}
+
+.popup_container {
+  
+  position: absolute;
+  top:0;
+  background-color: grey;
+  opacity: 0.5;
+  height: 100vh;
+  width: 100vw;
+}
+
+.popup {
+  
+  display: none;
+}
+
+.popup_active {
+  z-index: 100;
+  display: block;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  padding: 10px 70px;
+  border: 1px solid black;
+  background-color: white;
+  opacity: 1;
+  text-align: center;
+}
+
+.popup_text {
+font-size: 30px;
+color: red;
+margin: 0 0 10px 0;
+}
+
+.popup_button {
+  float: right;
+  background-color: blue;
+  border: none;
+  color: white;
 }
