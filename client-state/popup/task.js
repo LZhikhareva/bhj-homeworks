@@ -1,25 +1,23 @@
-const popup = document.querySelector('.modal');
-const popupClose = document.querySelector('.modal__close');
+const popUp = document.querySelector('.modal');
+const popUpClose = document.querySelector('.modal__close');
 
-popup.classList.add('modal_active');
-
-popupClose.addEventListener('click', () => {
-    popup.classList.remove('modal_active');
-    document.cookie = "modal__close=yes; path=/;";
+popUpClose.addEventListener('click', () => {
+    popUp.classList.remove('modal_active');
+    document.cookie = "modalClose=yes; path=/";
 });
 
 function getCookie(name) {
-    let cookie_arr = document.cookie.split('; ');
-    let cookie_obj = {};
+    let cookieArr = document.cookie.split('; ');
+    let cookieObj = {};
 
-    for (let i = 0; i < cookie_arr.length; i++) {
-        let nv = cookie_arr[i].split('=');
-        cookie_obj[nv[0]] = nv[1];
+    for (let i = 0; i < cookieArr.length; i++) {
+        let nv = cookieArr[i].split('=');
+        cookieObj[nv[0]] = nv[1];
     }
 
-    return cookie_obj[name];
+    return cookieObj[name];
 }
 
-if (getCookie('modal__close') === 'yes') {
-    popup.classList.remove('modal_active');
+if (getCookie('modalClose') !== 'yes') {
+    popUp.classList.add('modal_active');
 }
